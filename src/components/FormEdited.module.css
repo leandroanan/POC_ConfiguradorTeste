@@ -1,0 +1,18 @@
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.form-row label {
+    text-align: left;
+    flex: 0 0 30%; /* Ajuste a largura da label conforme necessário */
+}
+
+.form-row input,
+.form-row select {
+    flex: 0 0 60%; /* Ajuste a largura da caixa de edição conforme necessário */
+}
+
+
