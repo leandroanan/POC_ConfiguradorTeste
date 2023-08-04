@@ -1,11 +1,5 @@
-export enum AuthType {
-    Header = "Header",
-    User = "Usuário",
-    None = "Sem autenticação"
-}
-
-export interface System {
-    Id: string;
+export interface ISystem {
+    systemId: string;
     name: string;
     url: string;
     authType: AuthType;
@@ -17,4 +11,10 @@ export interface AuthData {
     value?: string;
     username?: string;
     password?: string;
+}
+
+export enum AuthType {
+    Header = "Header",
+    User = "Usuário",
+    None = "Sem autenticação",
 }

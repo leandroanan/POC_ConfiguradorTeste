@@ -1,0 +1,18 @@
+{
+  "labels": {
+    "header.title": "POC Configurador ES BackEnd",
+    "systemLink": "Sistema ES",
+    "documentLink": "Documento ES",
+    "systemName": "Nombre del Sistema",
+    "urlLabel": "URL del Sistema",
+    "authType": "Tipo de Autenticación",
+    "authKey": "Clave",
+    "authValue": "Valor",
+    "authUsername": "Usuario",
+    "authPassword": "Contraseña",
+    "documentName": "Nombre del Documento",
+    "selectSystem": "Seleccionar Sistema",
+    "save": "Guardar",
+    "editDocument": "Editar Documento"
+  }
+}

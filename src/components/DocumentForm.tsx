@@ -1,58 +1,74 @@
-import React, { useState } from "react";
-import { Document, System } from "../interfaces/";
-import { useStore } from "../hooks/store.ts";
-import styles from './Form.module.css';
+// Importando as dependências
+import React, { FC, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { Document } from "../interfaces/Document.ts";
+import { ISystem } from "../interfaces/ISystem.ts";
+import { useStore } from "../hooks/store";
 import DocumentList from './DocumentList';
-import {v4 as uuidv4} from "uuid";
+import styles from './Form.module.css';
+import {Button} from "antd";
 
-function DocumentForm() {
-    // Utiliza o useState para criar estados locais para nome e sistema
-    const [name, setName] = useState("");
-    const [system, setSystem] = useState<System | null>(null);
+// Definindo os props do componente DocumentForm
+interface DocumentFormProps {}
 
-    // Utiliza a função useStore para obter a lista de sistemas da store
+// Definindo o componente DocumentForm
+const DocumentForm: FC<DocumentFormProps> = () => {
+    // Criando o estado para o nome do documento e o sistema selecionado
+    const [name, setName] = useState<string>("");
+    const [system, setSystem] = useState<ISystem | null>(null);
+
+    // Obtendo os sistemas e a função addDocument do state
     const systems = useStore((state) => state.systems);
-
     const addDocument = useStore((state) => state.addDocument);
 
-    const submitForm = (event: React.FormEvent) => {
-        // Previne o comportamento padrão do formulário (atualizar a página)
+    // Função para submeter o formulário
+    const submitForm = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
 
-        // Verifica se o sistema não é nulo e se o nome do documento não está vazio
-        if (system !== null && name.trim() !== "") {
-            // Cria um novo documento com um ID gerado e os valores do nome e sistema
-            addDocument({ Id: uuidv4(), name, system } as Document);
+        // Verificando se o sistema foi selecionado e se o nome foi preenchido
+        if (system && name.trim() !== "") {
+            // Criando um novo documento
+            const newDocument: { system: ISystem; name: string; Id: string } = {
+                Id: uuidv4(),
+                name,
+                system
+            };
 
-            // Limpa os campos após adicionar o documento
+            // Adicionando o novo documento
+            addDocument(newDocument as Document);
+
+            // Resetando o estado
             setSystem(null);
             setName("");
         } else {
+            // Se não, mostra um alerta para o usuário
             alert("Favor preencher o nome do documento e selecionar um sistema!");
-            return;
         }
     };
 
-    // Retorna o JSX do formulário
+    // Renderizando o formulário
     return (
         <div>
             <form className={styles.form} onSubmit={submitForm}>
                 <div className={styles.input_container}>
                     <label>
                         Nome do Documento:
-                        <input type="text" value={name} onChange={e => setName(e.target.value)} />
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                        />
                     </label>
                 </div>
 
-                {/* Campo de seleção para o sistema associado ao documento */}
                 <div className={styles.input_container}>
                     <label>
                         Sistema:
-                        {/* O valor do select é definido como o nome do sistema selecionado */}
-                        {/* O evento onChange atualiza o estado do sistema com base no valor selecionado */}
-                        <select value={system?.name || ''} onChange={e => setSystem(systems.find(s => s.name === e.target.value) || null)}>
+                        <select
+                            value={system?.name || ''}
+                            onChange={e => setSystem(systems.find(s => s.name === e.target.value) || null)}
+                        >
                             <option value="">Selecione um sistema</option>
-                            {/* Mapeia a lista de sistemas e cria uma opção para cada um */}
                             {systems.map(s => (
                                 <option key={s.name} value={s.name}>{s.name}</option>
                             ))}
@@ -60,17 +76,17 @@ function DocumentForm() {
                     </label>
                 </div>
 
-                {/* Botão para enviar o formulário */}
-                <div className={styles.input_container}>
+                {/*<div className={styles.input_container}>
                     <input type="submit" value="Enviar" />
-                </div>
+                </div>*/}
+                <Button type="primary" htmlType="submit">Enviar</Button>
             </form>
 
-            {/* Lista de documentos cadastrados */}
             <h3>Documentos Cadastrados:</h3>
             <DocumentList />
         </div>
     );
 }
 
+// Exportando o componente
 export default DocumentForm;

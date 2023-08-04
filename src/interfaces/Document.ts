@@ -1,7 +1,8 @@
-import { System } from './System';
+import { ISystem } from './ISystem.ts';
 
 export interface Document {
     Id: string;
     name: string;
-    system: System;
+    systemId: string;
+    system: ISystem;
 }

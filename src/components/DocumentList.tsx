@@ -1,97 +1,123 @@
-import React, { useState } from "react";
+// Importando as dependências
+import { FC, useState } from "react";
 import { useStore } from "../hooks/store";
 import Modal from "./Modal";
 import DocumentEdit from "./DocumentEdit";
-import { System } from "../interfaces/System";
-import { Document } from "../interfaces/Document";
+import { ISystem } from "../interfaces/ISystem.ts";
+import { Document } from "../interfaces/Document.ts";
+import listStyles from "./List.module.css";
+import styles from "./FormEdited.module.css";
 
-function DocumentList() {
-    // Obtém a lista de documentos da store
-    const documents = useStore((state) => state.documents);
-
-    // Obtém as funções da store para remover e atualizar documentos
+// Definindo o componente DocumentList
+const DocumentList: FC = () => {
+    // Obtendo os documentos e as funções removeDocument e updateDocument do state
+    const documents: Document[] = useStore((state) => state.documents);
     const removeDocument = useStore((state) => state.removeDocument);
     const updateDocument = useStore((state) => state.updateDocument);
 
-    // Estados locais para armazenar os valores do documento a ser editado
-    const [editDocumentId, setEditDocumentId] = useState("");
-    const [editedName, setEditedName] = useState("");
-    const [editedSystem, setEditedSystem] = useState<System | null>(null);
+    // Definindo o estado para o documento a ser editado e se o modal está aberto ou não
+    const [editDocumentId, setEditDocumentId] = useState<string>("");
+    const [editedName, setEditedName] = useState<string>("");
+    const [editedSystem, setEditedSystem] = useState<ISystem | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    // Estado local para controlar a abertura e fechamento do modal de edição
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    // Manipulador de evento para o clique no botão "Editar" de um documento
-    const handleEditClick = (documentId: string, name: string, system: System) => {
-        // Atualiza os estados locais com os valores do documento a ser editado
+    // Função para lidar com o clique no botão de editar
+    const handleEditClick = (
+        documentId: string,
+        name: string,
+        system: ISystem
+    ) => {
+        // Atualizando o estado com as informações do documento a ser editado e abrindo o modal
         setEditDocumentId(documentId);
         setEditedName(name);
         setEditedSystem(system);
-        setIsModalOpen(true); // Abre o modal de edição
+        setIsModalOpen(true);
     };
 
-    // Manipulador de evento para o clique no botão "Salvar" do modal de edição
+    // Função para lidar com o clique no botão de salvar
     const handleSaveClick = () => {
-        // Cria um objeto de documento atualizado com os valores dos estados locais
-        const updatedDocument: Document = {
-            Id: editDocumentId,
-            name: editedName,
-            system: editedSystem as System,
-        };
+        // Se um sistema foi selecionado, atualiza o documento
+        if (editedSystem) {
+            const updatedDocument: { system: ISystem; name: string; Id: string } = {
+                Id: editDocumentId,
+                name: editedName,
+                system: editedSystem,
+            };
 
-        // Chama a função de atualização de documento da store
-        updateDocument(updatedDocument);
+            updateDocument(updatedDocument as Document);
+        }
 
-        // Limpa os estados locais e fecha o modal de edição
+        // Fechando o modal e resetando o estado
         setIsModalOpen(false);
         setEditDocumentId("");
         setEditedName("");
         setEditedSystem(null);
     };
 
-    // Manipulador de evento para o clique no botão "Cancelar" do modal de edição
+    // Função para lidar com o clique no botão de cancelar
     const handleCancelClick = () => {
-        // Limpa os estados locais e fecha o modal de edição
+        // Fechando o modal e resetando o estado
         setIsModalOpen(false);
         setEditDocumentId("");
         setEditedName("");
         setEditedSystem(null);
     };
 
+    // Renderizando o componente
     return (
-        <ul>
-            {documents.map((document, index) => (
-                <li key={document.Id}>
-                    <p>Id do documento: {document.Id}</p>
-                    <p>Nome do documento: {document.name}</p>
-                    <p>Nome do sistema: {document.system.name}</p>
-                    <button onClick={() => removeDocument(document.Id)}>Excluir</button>
-                    <button
-                        onClick={() =>
-                            handleEditClick(document.Id, document.name, document.system)
-                        }
-                    >
-                        Editar
-                    </button>
-                    {/* Renderiza o modal de edição apenas se o ID do documento corresponder ao documento sendo editado */}
+        <table className={listStyles.table}>
+            <thead>
+            <tr>
+                <th>Id do documento</th>
+                <th>Nome do documento</th>
+                <th>Nome do sistema</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {documents.map((document: Document) => (
+                <tr key={document.Id}>
+                    <td>{document.Id}</td>
+                    <td>{document.name}</td>
+                    <td>{document.system.name}</td>
+                    <td>
+                        <button
+                            className={listStyles.button}
+                            onClick={() =>
+                                handleEditClick(document.Id, document.name, document.system)
+                            }
+                        >
+                            Editar
+                        </button>
+                    </td>
+                    <td>
+                        <button
+                            className={listStyles.button}
+                            onClick={() => removeDocument(document.Id)}
+                        >
+                            Excluir
+                        </button>
+                    </td>
                     {isModalOpen && editDocumentId === document.Id && (
                         <Modal>
-                            {/* Passa os valores do documento a ser  editado para o componente DocumentEdit */}
                             <DocumentEdit
                                 editedName={editedName}
-                                setEditedName={setEditedName} 
+                                setEditedName={setEditedName}
                                 editedSystem={editedSystem}
                                 setEditedSystem={setEditedSystem}
                                 documentId={document.Id}
                             />
-                            <button onClick={handleSaveClick}>Salvar</button>
-                            <button onClick={handleCancelClick}>Cancelar</button>
+                            <button onClick={handleSaveClick} className={styles.button}>Salvar</button>
+                            <button onClick={handleCancelClick} className={styles.button}>Cancelar</button>
                         </Modal>
                     )}
-                </li>
+                </tr>
             ))}
-        </ul>
+            </tbody>
+        </table>
     );
-}
+};
 
+// Exportando o componente
 export default DocumentList;

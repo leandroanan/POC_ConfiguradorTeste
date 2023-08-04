@@ -1,0 +1,18 @@
+{
+  "labels": {
+    "header.title": "POC Configurador BR BackEnd",
+    "systemLink": "Sistema BR",
+    "documentLink": "Documento BR",
+    "systemName": "Nome do Sistema",
+    "urlLabel": "URL do Sistema",
+    "authType": "Tipo de Autenticação",
+    "authKey": "Chave",
+    "authValue": "Valor",
+    "authUsername": "Usuário",
+    "authPassword": "Senha",
+    "documentName": "Nome do Documento",
+    "selectSystem": "Selecionar Sistema",
+    "save": "Salvar",
+    "editDocument": "Editar Documento"
+  }
+}

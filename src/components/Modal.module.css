@@ -1,31 +1,36 @@
-.fade{
+/* Modal.module.css */
+
+.fade {
     width: 100%;
     height: 100%;
     position: fixed;
+    top: 0;
+    left: 0;
     background-color: #000;
     opacity: 0.3;
 }
 
-.modal{
+.modal {
     position: fixed;
-    top: 38%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     margin: 0 auto;
-    width: 500px;
-    height: 400px;
+    height: fit-content; /* Ajustar a altura conforme o conteúdo */
+    width: 90%; /* Alteração: Reduzir a largura para 90% */
+    max-width: 500px; /* Alteração: Adicionar um valor máximo de largura */
     z-index: 10000;
     background-color: #ffffff;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* Alteração: Alinhar ao topo */
     text-align: center;
 }
 
-.modal h2{
+.modal h2 {
     margin-bottom: 1em;
 }
 
-.modal form{
-    width: 90%;
+.modal form {
+    width: 100%; /* Alteração: Definir a largura do formulário como 100% */
 }

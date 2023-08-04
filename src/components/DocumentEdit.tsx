@@ -1,56 +1,60 @@
-import React from "react";
-import { System } from "../interfaces/System";
-import { Document } from "../interfaces/Document";
+// Importando as dependências
+import { FC, ChangeEvent } from "react";
+import { ISystem } from "../interfaces/ISystem.ts";
 import { useStore } from "../hooks/store";
-import { Form, Button } from 'react-bootstrap';
+import styles from "./FormEdited.module.css";
+
+// Criando uma interface para os props do componente
 interface DocumentEditProps {
     editedName: string;
     setEditedName: (name: string) => void;
-    editedSystem: System | null;
-    setEditedSystem: (system: System | null) => void;
+    editedSystem: ISystem | null;
+    setEditedSystem: (system: ISystem | null) => void;
     documentId: string;
 }
 
-const DocumentEdit: React.FC<DocumentEditProps> = ({
-                                                       editedName,
-                                                       setEditedName,
-                                                       editedSystem,
-                                                       setEditedSystem,
-                                                       documentId,
-                                                   }) => {
+// Definindo o componente DocumentEdit
+const DocumentEdit: FC<DocumentEditProps> = ({
+                                                 editedName,
+                                                 setEditedName,
+                                                 editedSystem,
+                                                 setEditedSystem,
+                                             }) => {
+    // Obtendo os sistemas e a função updateDocument do state
     const systems = useStore((state) => state.systems);
-    const updateDocument = useStore((state) => state.updateDocument);
 
-    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Função para lidar com a alteração do nome do documento
+    const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEditedName(event.target.value);
     };
 
-    const handleSystemChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    // Função para lidar com a alteração do sistema do documento
+    const handleSystemChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const systemName = event.target.value;
         const system = systems.find((sys) => sys.name === systemName) || null;
         setEditedSystem(system);
     };
 
-    const handleSaveClick = () => {
-        const updatedDocument: Document = {
-            Id: documentId,
-            name: editedName,
-            system: editedSystem as System,
-        };
-
-        updateDocument(updatedDocument);
-    };
-
+    // Renderizando o componente
     return (
-        <div>
-            <h2>Editar Documento</h2>
-            <label>
+        <div className={styles.container}>
+            <h2 className={styles.title}>Editar Documento</h2>
+            <label className={styles.label}>
                 Nome do Documento:
-                <input type="text" value={editedName} onChange={handleNameChange} />
+                <input
+                    type="text"
+                    value={editedName}
+                    onChange={handleNameChange}
+                    className={styles.input}
+                />
             </label>
-            <label>
+            <label className={styles.label}>
                 Sistema:
-                <select value={editedSystem?.name || ""} onChange={handleSystemChange}>
+                <select
+                    value={editedSystem?.name || ""}
+                    onChange={handleSystemChange}
+                    className={styles.input}
+                >
                     <option value="">Selecione um sistema</option>
                     {systems.map((sys) => (
                         <option key={sys.name} value={sys.name}>
@@ -63,4 +67,5 @@ const DocumentEdit: React.FC<DocumentEditProps> = ({
     );
 };
 
+// Exportando o componente
 export default DocumentEdit;

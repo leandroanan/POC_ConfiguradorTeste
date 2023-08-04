@@ -36,3 +36,60 @@ body {
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
+
+.link {
+  margin: 0 1em;
+  padding: 0.5em;
+  text-decoration: none;
+  color: #333;
+  background-color: #f6f6f6;
+  border-radius: 4px;
+}
+
+.link:hover {
+  background-color: #ccc;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+nav .link {
+  margin: 0 1em;
+  padding: 0.5em;
+  text-decoration: none;
+  color: #333;
+  background-color: #f6f6f6;
+  border-radius: 4px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+nav .link:hover {
+  background-color: #ccc;
+}
+
+/* App.css */
+
+nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+nav button {
+  margin: 0 1em;
+  padding: 0.5em;
+  background-color: #61dafd;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+}
+
+nav button:hover {
+  background-color: #61dafd;
+}

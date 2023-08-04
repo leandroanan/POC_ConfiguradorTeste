@@ -1,18 +1,71 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    padding-top: 2rem;
+}
+
 .form-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem; /* Aumentar o espaçamento para 1.5rem */
 }
 
 .form-row label {
     text-align: left;
-    flex: 0 0 30%; /* Ajuste a largura da label conforme necessário */
+    flex: 0 0 30%;
 }
 
 .form-row input,
 .form-row select {
-    flex: 0 0 60%; /* Ajuste a largura da caixa de edição conforme necessário */
+    flex: 0 0 60%;
+    margin-left: 0.5rem;
 }
 
+.button {
+    padding: 4px 8px;
+    margin-right: 4px;
+    border: none;
+    border-radius: 4px;
+    background-color: #61dafd;
+    color: #333;
+    cursor: pointer;
+}
 
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.button-container button {
+    margin: 0 0.5rem;
+    background-color: #61dafd;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.title {
+    margin-bottom: 1em;
+}
+
+.label {
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+.input {
+    width: 100%;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.inputContainer {
+    margin-bottom: 1.5rem;
+}
